@@ -3,7 +3,7 @@ const app = express()
 const port = 3003
 
 
-const movies = [
+var movies = [
     { title: 'Jaws', year: 1975, rating: 8,id :1 },
     { title: 'Avatar', year: 2009, rating: 7.8 ,id :2},
     { title: 'Brazil', year: 1985, rating: 8 ,id :3},
@@ -38,14 +38,31 @@ app.get('/search', (req, res) => {
         res.status(500).send('status:500, error:true, message:"you have to provide a search"')
     }
 })
+app.get('/movies/add', (req, res) => {
+    if(req.query.title && !isNaN(req.query.year ) ){
+        if(req.query.year >1000 & req.query.year < 9999){
+            movies.push({
+                title: req.query.title , 
+                year: req.query.year,
+                rating: req.query.rating? req.query.rating : 4,
+                id :new Date().getTime()
+            })
+           res.redirect('/movies/read')
+
+        }else{
+            res.status(403).send("{status:403, error:true, message:'you cannot create a movie without providing a title and a year'}")
+        }
+    }
+    
+})
 app.get('/movies/create', (req, res) => {
     res.send('status :200 , message: "ok" ' )
 })
 app.get('/movies/read', (req, res) => {
     r = ""
     movies.forEach(e=> 
-        r += "rating: "+e.rating +" title: " + e.title
-        + " year: "+ e.year +"<br>");
+        r += "rating: "+e.rating +"-   title: " + e.title
+        + "-   year: "+ e.year +"<br>");
     res.send('status :200 , data :'+ r)
 })
 
@@ -112,8 +129,7 @@ app.get('/movies/read/id/:id', (req, res) => {
         
         res.status(404).send("status:404, error:true, message:'the movie <ID> does not exist");
 
-  // respond with html page
-  
+ 
 }
 })
 app.get('/movies/update', (req, res) => {
