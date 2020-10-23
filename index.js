@@ -4,10 +4,10 @@ const port = 3003
 
 
 const movies = [
-    { title: 'Jaws', year: 1975, rating: 8 },
-    { title: 'Avatar', year: 2009, rating: 7.8 },
-    { title: 'Brazil', year: 1985, rating: 8 },
-    { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 }
+    { title: 'Jaws', year: 1975, rating: 8,id :1 },
+    { title: 'Avatar', year: 2009, rating: 7.8 ,id :2},
+    { title: 'Brazil', year: 1985, rating: 8 ,id :3},
+    { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 ,id :4}
 ]
 
 
@@ -96,6 +96,21 @@ app.get('/movies/read/by-title', (req, res) => {
         r += "rating: "+e.rating +" title: " + e.title
         + " year: "+ e.year +"<br>");
     res.send('status :200 , data :'+ r)
+})
+app.get('/movies/read/id/:id', (req, res) => {
+    movie = ""
+    r = false
+    movies.forEach(e=> {
+        if(req.params.id == e.id){
+            movie = e.title + " " + e.year +" "+ e.rating;
+            r=true;
+        }
+    });
+    if(r){
+        res.send('status :200 , data :'+ movie)
+    }else{
+        res.send('status:404, error:true, message:the movie <ID> does not exist')
+    }
 })
 app.get('/movies/update', (req, res) => {
     res.send('status :200 , message: "ok" ' )
