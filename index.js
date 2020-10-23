@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3001
+const port = 3003
 
 
 const movies = [
@@ -44,6 +44,55 @@ app.get('/movies/create', (req, res) => {
 app.get('/movies/read', (req, res) => {
     r = ""
     movies.forEach(e=> 
+        r += "rating: "+e.rating +" title: " + e.title
+        + " year: "+ e.year +"<br>");
+    res.send('status :200 , data :'+ r)
+})
+
+app.get('/movies/read/by-date', (req, res) => {
+    movie= movies.sort((a,b)=>{
+        if ( a.year< b.year){
+            return 1;
+          }
+          if ( a.year> b.year){
+            return -1;
+          }
+          return 0;
+    })
+    r = ""
+    movie.forEach(e=> 
+        r += "rating: "+e.rating +" title: " + e.title
+        + " year: "+ e.year +"<br>");
+    res.send('status :200 , data :'+ r)
+})
+app.get('/movies/read/by-rating', (req, res) => {
+    movie= movies.sort((a,b)=>{
+        if ( a.rating< b.rating){
+            return 1;
+          }
+          if ( a.rating> b.rating){
+            return -1;
+          }
+          return 0;
+    })
+    r = ""
+    movie.forEach(e=> 
+        r += "rating: "+e.rating +" title: " + e.title
+        + " year: "+ e.year +"<br>");
+    res.send('status :200 , data :'+ r)
+})
+app.get('/movies/read/by-title', (req, res) => {
+    movie= movies.sort((a,b)=>{
+        if ( a.title< b.title){
+            return -1;
+          }
+          if ( a.title> b.title){
+            return 1;
+          }
+          return 0;
+    })
+    r = ""
+    movie.forEach(e=> 
         r += "rating: "+e.rating +" title: " + e.title
         + " year: "+ e.year +"<br>");
     res.send('status :200 , data :'+ r)
