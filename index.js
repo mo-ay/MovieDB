@@ -35,7 +35,7 @@ app.get('/search', (req, res) => {
     if(req.query.s){
         res.send('status :200 , message: "ok" , data : ' +req.query.s)
     }else{
-        res.send('status:500, error:true, message:"you have to provide a search"')
+        res.status(500).send('status:500, error:true, message:"you have to provide a search"')
     }
 })
 app.get('/movies/create', (req, res) => {
@@ -109,8 +109,12 @@ app.get('/movies/read/id/:id', (req, res) => {
     if(r){
         res.send('status :200 , data :'+ movie)
     }else{
-        res.send('status:404, error:true, message:the movie <ID> does not exist')
-    }
+        
+        res.status(404).send("status:404, error:true, message:'the movie <ID> does not exist");
+
+  // respond with html page
+  
+}
 })
 app.get('/movies/update', (req, res) => {
     res.send('status :200 , message: "ok" ' )
