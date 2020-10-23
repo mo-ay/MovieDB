@@ -136,7 +136,17 @@ app.get('/movies/update', (req, res) => {
     res.send('status :200 , message: "ok" ' )
 })
 app.get('/movies/delete', (req, res) => {
-    res.send('status :200 , message: "ok" ' )
+    if(req.query.id){
+        movies.forEach((e,ind) =>{
+            if(e.id == req.query.id){
+                movies.splice(ind,1)
+               
+            }
+        })
+        res.redirect('/movies/read')
+    }else{
+    res.status(404).send("{status:404, error:true, message:'the movie <ID> does not exist'}" )
+    }
 })
 
 app.listen(port, () => {
