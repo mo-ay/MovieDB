@@ -133,7 +133,17 @@ app.get('/movies/read/id/:id', (req, res) => {
 }
 })
 app.get('/movies/update', (req, res) => {
-    res.send('status :200 , message: "ok" ' )
+    if(req.query.id ){
+        movies.forEach(e=>{
+            if(e.id == req.query.id){
+                e.title = req.query.title ? req.query.title: e.title
+                e.rating = req.query.rating ? req.query.rating: e.rating
+                e.year = req.query.year > 1000 ? req.query.year  : e.year
+            }
+        })
+        res.redirect('/movies/read')
+    }
+   
 })
 app.get('/movies/delete', (req, res) => {
     if(req.query.id){
