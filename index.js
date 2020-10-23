@@ -1,6 +1,8 @@
+const { Router } = require('express')
 const express = require('express')
 const app = express()
-const port = 3003
+var router = express.Router()
+const port = 3000
 
 
 var movies = [
@@ -38,13 +40,13 @@ app.get('/search', (req, res) => {
         res.status(500).send('status:500, error:true, message:"you have to provide a search"')
     }
 })
-app.get('/movies/add', (req, res) => {
-    if(req.query.title && !isNaN(req.query.year ) ){
-        if(req.query.year >1000 & req.query.year < 9999){
+app.post('/movies/add', (req, res) => {
+    if(req.params.title && !isNaN(req.params.year ) ){
+        if(req.params.year >1000 & req.params.year < 9999){
             movies.push({
-                title: req.query.title , 
-                year: req.query.year,
-                rating: req.query.rating? req.query.rating : 4,
+                title: req.params.title , 
+                year: req.params.year,
+                rating: req.params.rating? req.params.rating : 4,
                 id :new Date().getTime()
             })
            res.redirect('/movies/read')
@@ -132,7 +134,7 @@ app.get('/movies/read/id/:id', (req, res) => {
  
 }
 })
-app.get('/movies/update', (req, res) => {
+app.put('/movies/update', (req, res) => {
     if(req.query.id ){
         movies.forEach(e=>{
             if(e.id == req.query.id){
@@ -145,10 +147,10 @@ app.get('/movies/update', (req, res) => {
     }
    
 })
-app.get('/movies/delete', (req, res) => {
-    if(req.query.id){
+app.delete('/movies/delete/:id', (req, res) => {
+    if(req.params.id){
         movies.forEach((e,ind) =>{
-            if(e.id == req.query.id){
+            if(e.id == req.params.id){
                 movies.splice(ind,1)
                
             }
