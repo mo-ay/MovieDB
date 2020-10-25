@@ -1,8 +1,32 @@
 const { Router } = require('express')
-const express = require('express')
+//const express = require('express')
+const express        = require('express');
+const MongoClient    = require('mongodb').MongoClient;
+const uri = "mongodb+srv://mostafa:mostafaA123@cluster0.gbsbs.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
+const bodyParser     = require('body-parser');
+
+
 const app = express()
-var router = express.Router()
-const port = 3000
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const port = 3001
+
+/*
+MongoClient.connect(uri , (err,client)=>{
+    if(err) throw err
+    console.log("we got thhis1")
+    var db = client.db('sample_airbnb')
+    db.collection('listingsAndReviews').findOne({_id:"10059244"},(err,result)=>{
+        if(err) throw err
+        console.log("we got thhis2")
+       
+        console.log(result.beds)
+        db.close();
+    })
+    
+})*/
+
+
 
 
 var movies = [
@@ -135,15 +159,20 @@ app.get('/movies/read/id/:id', (req, res) => {
 }
 })
 app.put('/movies/update', (req, res) => {
-    if(req.query.id ){
+    
+    if(req.body.id ){
+        
         movies.forEach(e=>{
-            if(e.id == req.query.id){
-                e.title = req.query.title ? req.query.title: e.title
-                e.rating = req.query.rating ? req.query.rating: e.rating
-                e.year = req.query.year > 1000 ? req.query.year  : e.year
+            if(e.id == req.body.id){
+                e.title = req.body.title ? req.body.title: e.title
+                e.rating = req.body.rating ? req.body.rating: e.rating
+                e.year = req.body.year > 1000 ? req.body.year  : e.year
             }
         })
         res.redirect('/movies/read')
+    }else{
+        res.status(404).send("{status:404, error:true, message:'the movie <ID> does not existxxxxx'}")
+ 
     }
    
 })
@@ -160,6 +189,8 @@ app.delete('/movies/delete/:id', (req, res) => {
     res.status(404).send("{status:404, error:true, message:'the movie <ID> does not exist'}" )
     }
 })
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
