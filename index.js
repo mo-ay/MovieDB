@@ -2,7 +2,7 @@ const { Router } = require('express')
 //const express = require('express')
 const express        = require('express');
 const MongoClient    = require('mongodb').MongoClient;
-const uri = "mongodb+srv://mostafa:mostafaA123@cluster0.gbsbs.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
+const uri = "mongodb+srv://@cluster0.gbsbs.mongodb.net/sample_airbnb?retryWrites=true&w=majority"
 const bodyParser     = require('body-parser');
 
 
